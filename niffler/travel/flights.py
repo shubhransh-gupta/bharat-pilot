@@ -98,7 +98,7 @@ class FlightRadar:
                 "destination": dest,
                 "date": target_date,
                 "flight": flight_no,
-                "source": "bharat-pilot"
+                "source": "niffler"
             })
             direct_checkout = f"https://www.makemytrip.com/flight/search?{query}"
 

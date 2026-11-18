@@ -75,7 +75,7 @@ class HotelRadar:
             query = urllib.parse.urlencode({
                 "city": city,
                 "hotel": name,
-                "source": "bharat-pilot"
+                "source": "niffler"
             })
             direct_checkout = f"https://www.makemytrip.com/hotels/hotel-details/?{query}"
 
