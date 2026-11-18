@@ -1,4 +1,4 @@
-name: BharatPilot Test Suite
+name: Niffler Test Suite
 
 on:
   push:

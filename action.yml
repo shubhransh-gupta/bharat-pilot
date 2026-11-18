@@ -1,9 +1,9 @@
-name: 'BharatPilot Travel & Citizen FinTech Agent'
-description: 'Autonomous flight & hotel fare radar, IRCTC availability, and automated ITR & EPF optimizer.'
+name: 'Niffler Autonomous Travel & Citizen FinTech Agent'
+description: 'Sniff out the cheapest flights, IRCTC train bookings, 1-click merchant checkout handoff, ITR-1 tax optimization, and EPF compounding.'
 author: 'Shubhransh Gupta'
 branding:
-  icon: 'navigation'
-  color: 'orange'
+  icon: 'compass'
+  color: 'yellow'
 
 inputs:
   mode:
@@ -39,13 +39,13 @@ runs:
       with:
         python-version: '3.11'
 
-    - name: Install BharatPilot
+    - name: Install Niffler
       shell: bash
       run: |
         python -m pip install --upgrade pip
         pip install git+https://github.com/shubhransh-gupta/bharat-pilot.git
 
-    - name: Run BharatPilot Task
+    - name: Run Niffler Task
       shell: bash
       env:
         GEMINI_API_KEY: ${{ inputs.api-key }}
@@ -55,9 +55,9 @@ runs:
           if [ -n "${{ inputs.max-price }}" ]; then
             ARGS="$ARGS --max-price ${{ inputs.max-price }}"
           fi
-          eval bharat-pilot $ARGS
+          eval niffler $ARGS
         elif [ "${{ inputs.mode }}" = "itr" ]; then
-          eval bharat-pilot itr 1200000
+          eval niffler itr 1200000
         else
-          eval bharat-pilot travel flights DEL BLR
+          eval niffler travel flights DEL BLR
         fi

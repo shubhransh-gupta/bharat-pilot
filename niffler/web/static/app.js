@@ -1,4 +1,4 @@
-// BharatPilot Interactive Client Logic
+// Niffler Interactive Client Logic
 document.addEventListener("DOMContentLoaded", () => {
   // 1. Tab Switching
   const navTabs = document.querySelectorAll(".nav-tab");
