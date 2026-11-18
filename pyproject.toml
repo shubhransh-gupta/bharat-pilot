@@ -8,13 +8,12 @@ version = "0.2.0"
 description = "Niffler: Autonomous Travel Concierge & Citizen FinTech Super-Agent (Flights, Hotels, IRCTC Tatkal, ITR & EPF)"
 readme = "README.md"
 requires-python = ">=3.9"
-license = { text = "MIT" }
+license = "MIT"
 authors = [
     { name = "Shubhransh Gupta", email = "54713516+shubhransh-gupta@users.noreply.github.com" }
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
@@ -32,3 +31,7 @@ dev = [
 niffler = "niffler.cli:main"
 niffler-agent = "niffler.cli:main"
 bharat-pilot = "niffler.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["niffler*"]

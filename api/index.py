@@ -1,0 +1,170 @@
+from http.server import BaseHTTPRequestHandler
+import json
+import urllib.parse
+import sys
+from pathlib import Path
+
+# Add project root to sys.path
+root_dir = Path(__file__).parent.parent
+sys.path.insert(0, str(root_dir))
+
+from niffler.travel.flights import FlightRadar
+from niffler.travel.hotels import HotelRadar
+from niffler.travel.trains import IRCTCRadar
+from niffler.travel.buses import BusRadar
+from niffler.travel.booking_handoff import BookingHandoffEngine
+from niffler.citizen.itr_optimizer import ITROptimizer
+from niffler.citizen.epf_explorer import EPFExplorer
+
+
+class handler(BaseHTTPRequestHandler):
+    flight_radar = FlightRadar()
+    hotel_radar = HotelRadar()
+    train_radar = IRCTCRadar()
+    bus_radar = BusRadar()
+    handoff_engine = BookingHandoffEngine()
+    itr_optimizer = ITROptimizer()
+    epf_explorer = EPFExplorer()
+
+    def do_GET(self):
+        parsed = urllib.parse.urlparse(self.path)
+        qs = urllib.parse.parse_qs(parsed.query)
+        route = qs.get("_route", [""])[0].strip("/") or parsed.path.replace("/api/", "").strip("/")
+
+        # Health check
+        if not route or route == "health":
+            return self._send_json({"status": "healthy", "service": "Niffler API", "version": "0.2.0"})
+
+        # 1. Flight Search
+        elif route == "flights":
+            orig = qs.get("origin", ["DEL"])[0]
+            dest = qs.get("destination", ["BLR"])[0]
+            date = qs.get("date", [None])[0]
+            direct = qs.get("direct", ["false"])[0].lower() == "true"
+            flights = self.flight_radar.search_flights(orig, dest, date, direct_only=direct)
+            return self._send_json([f.__dict__ for f in flights])
+
+        # 2. Hotel Search
+        elif route == "hotels":
+            city = qs.get("city", ["GOA"])[0]
+            budget = int(qs.get("budget", [0])[0]) if qs.get("budget") else None
+            couple = qs.get("couple", ["false"])[0].lower() == "true"
+            hotels = self.hotel_radar.search_hotels(city, max_budget=budget, couple_friendly_only=couple)
+            return self._send_json([h.__dict__ for h in hotels])
+
+        # 3. Train Search
+        elif route == "trains":
+            orig = qs.get("origin", ["NDLS"])[0]
+            dest = qs.get("destination", ["MMCT"])[0]
+            trains = self.train_radar.search_trains(orig, dest)
+            return self._send_json([t.__dict__ for t in trains])
+
+        # 4. Bus Search
+        elif route == "buses":
+            orig = qs.get("origin", ["BLR"])[0]
+            dest = qs.get("destination", ["HYD"])[0]
+            buses = self.bus_radar.search_buses(orig, dest)
+            return self._send_json([b.__dict__ for b in buses])
+
+        # 5. PNR Status
+        elif route == "pnr":
+            pnr = qs.get("pnr", ["2418901234"])[0]
+            status = self.train_radar.check_pnr_status(pnr)
+            return self._send_json(status.__dict__)
+
+        # 6. EPF Explorer
+        elif route == "epf":
+            basic = int(qs.get("basic", [50000])[0])
+            tenure = float(qs.get("tenure", [4.5])[0])
+            balance = int(qs.get("balance", [350000])[0])
+            summary = self.epf_explorer.parse_or_simulate_account(
+                monthly_basic_da=basic, years_of_service=tenure, starting_epf_balance=balance
+            )
+            rules = self.epf_explorer.check_withdrawal_eligibility(tenure, summary.employee_share_balance_inr)
+            proj = self.epf_explorer.project_retirement_corpus(monthly_basic_da=basic, current_balance=summary.total_epf_balance_inr)
+            return self._send_json({
+                "summary": summary.__dict__,
+                "eligibility": rules.__dict__,
+                "projection": proj.__dict__
+            })
+
+        self.send_error(404, f"Route not found: {route}")
+
+    def do_POST(self):
+        parsed = urllib.parse.urlparse(self.path)
+        qs = urllib.parse.parse_qs(parsed.query)
+        route = qs.get("_route", [""])[0].strip("/") or parsed.path.replace("/api/", "").strip("/")
+
+        content_len = int(self.headers.get("Content-Length", 0))
+        body = self.rfile.read(content_len).decode("utf-8") if content_len else "{}"
+        try:
+            data = json.loads(body)
+        except Exception:
+            data = {}
+
+        if route == "booking/handoff":
+            b_type = data.get("type", "flight")
+            if b_type == "hotel":
+                sess = self.handoff_engine.prepare_hotel_handoff(
+                    data.get("hotel_name", "Taj Exotica"),
+                    data.get("city", "Goa"),
+                    int(data.get("nights", 2)),
+                    int(data.get("price", 14500))
+                )
+            else:
+                sess = self.handoff_engine.prepare_flight_handoff(
+                    data.get("airline", "IndiGo"),
+                    data.get("flight_number", "6E-2041"),
+                    data.get("origin", "DEL"),
+                    data.get("destination", "BLR"),
+                    int(data.get("fare", 4800))
+                )
+            return self._send_json(sess.__dict__)
+
+        elif route == "itr/optimize":
+            salary = int(data.get("gross_salary", 1200000))
+            sec80c = int(data.get("sec_80c", 150000))
+            sec80d = int(data.get("sec_80d", 25000))
+            hra = int(data.get("hra", 120000))
+            tds = int(data.get("tds", 80000))
+            pan = data.get("pan", "ABCDE1234F")
+            name = data.get("name", "Shubhransh Gupta")
+
+            res = self.itr_optimizer.optimize_and_generate_itr(
+                pan=pan,
+                name=name,
+                gross_salary=salary,
+                sec_80c=sec80c,
+                sec_80d=sec80d,
+                hra_exemption=hra,
+                tds_deducted=tds
+            )
+            return self._send_json({
+                "pan": res.pan,
+                "assessment_year": res.assessment_year,
+                "old_regime": res.old_regime.__dict__,
+                "new_regime": res.new_regime.__dict__,
+                "recommended_regime": res.recommended_regime,
+                "tax_savings_inr": res.tax_savings_inr,
+                "itr_1_json": res.itr_1_json
+            })
+
+        self.send_error(404, f"Route not found: {route}")
+
+    def _send_json(self, data):
+        payload = json.dumps(data).encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Content-Length", str(len(payload)))
+        self.end_headers()
+        self.wfile.write(payload)
+
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.end_headers()
