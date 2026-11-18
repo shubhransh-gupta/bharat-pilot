@@ -1,7 +1,7 @@
 # ✨ Niffler (`niffler-agent`)
 
 [![Documentation](https://img.shields.io/badge/Documentation-Live%20Portal-blue?style=for-the-badge&logo=vercel)](https://agent-docs-coral.vercel.app)
-[![GitHub Stars](https://img.shields.io/github/stars/shubhransh-gupta/bharat-pilot?style=for-the-badge&color=2997ff)](https://github.com/shubhransh-gupta/bharat-pilot/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/shubhransh-gupta/niffler?style=for-the-badge&color=2997ff)](https://github.com/shubhransh-gupta/niffler/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 > **Autonomous Travel Concierge & Citizen FinTech Super-Agent** • Multi-Airline Fare Radar • IRCTC Tatkal & Live Berths • 1-Click Merchant Handoff • CA-Free ITR-1 Optimizer • EPFO Wealth Compounder
@@ -56,8 +56,8 @@ Booking travel across flights, IRCTC trains, and hotels is fragmented across doz
 Clone and install locally:
 
 ```bash
-git clone https://github.com/shubhransh-gupta/bharat-pilot.git
-cd bharat-pilot
+git clone https://github.com/shubhransh-gupta/niffler.git
+cd niffler
 pip install -e .
 ```
 
@@ -120,7 +120,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run Niffler Fare Watcher
-        uses: shubhransh-gupta/bharat-pilot@v1
+        uses: shubhransh-gupta/niffler@v1
         with:
           origin: 'DEL'
           destination: 'BLR'
