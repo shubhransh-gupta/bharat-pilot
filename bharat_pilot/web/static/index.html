@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BharatPilot — Autonomous Travel & Citizen FinTech Super-Agent</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-left">
+      <div class="brand-badge">
+        <span class="bp-logo">🇮🇳</span>
+        <span class="brand-title">BharatPilot</span>
+      </div>
+      <span class="nav-tagline">Autonomous Travel & Citizen FinTech</span>
+    </div>
+
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-tab="tab-travel">
+        <span class="tab-icon">✈️</span> Travel Super-Agent
+      </button>
+      <button class="nav-tab" data-tab="tab-citizen">
+        <span class="tab-icon">🏛️</span> Citizen FinTech (ITR & EPF)
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <div class="profile-pill">
+        <span class="avatar">SG</span>
+        <span class="profile-name">Shubhransh Gupta</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="container">
+
+    <!-- ========================================================================= -->
+    <!-- TAB 1: TRAVEL SUPER-AGENT -->
+    <!-- ========================================================================= -->
+    <section id="tab-travel" class="tab-content active">
+      <div class="hero-section">
+        <h1>Autonomous Travel Concierge</h1>
+        <p>Compare cheapest flight fares, discover boutique stays, check IRCTC train berths & PNR status, and auto-fill passenger data directly onto checkout.</p>
+      </div>
+
+      <!-- Mode Switcher -->
+      <div class="travel-subnav">
+        <button class="subnav-btn active" data-mode="flights">✈️ Flights Radar</button>
+        <button class="subnav-btn" data-mode="hotels">🏨 Hotels & Stays</button>
+        <button class="subnav-btn" data-mode="trains">🚆 IRCTC Trains & PNR</button>
+        <button class="subnav-btn" data-mode="buses">🚌 Intercity Buses</button>
+      </div>
+
+      <!-- Search Controls -->
+      <div class="search-card">
+        <div class="input-grid" id="travel-inputs">
+          <div class="input-group">
+            <label>Origin</label>
+            <input type="text" id="travel-origin" value="DEL" placeholder="e.g. DEL, BOM, BLR">
+          </div>
+          <div class="input-group">
+            <label>Destination / City</label>
+            <input type="text" id="travel-dest" value="BLR" placeholder="e.g. BLR, GOA, JAI">
+          </div>
+          <div class="input-group">
+            <label>Date</label>
+            <input type="date" id="travel-date">
+          </div>
+          <div class="input-group search-btn-wrap">
+            <button id="btn-search-travel" class="btn-primary">Find Lowest Fares &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Grid -->
+      <div class="results-header">
+        <h2 id="results-title">Available Flights & Fares</h2>
+        <span class="status-badge" id="results-count">Scanning...</span>
+      </div>
+
+      <div class="cards-grid" id="travel-cards">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 2: CITIZEN FINTECH (ITR & EPF) -->
+    <!-- ========================================================================= -->
+    <section id="tab-citizen" class="tab-content">
+      <div class="hero-section">
+        <h1>Citizen FinTech & Tax Copilot</h1>
+        <p>Stop paying thousands to CAs for standard ITRs. Optimize your tax liability under Budget 2024 revisions, generate compliant ITR-1 JSON, and track your EPF compounding corpus.</p>
+      </div>
+
+      <div class="citizen-grid">
+        <!-- Card 1: ITR Optimizer -->
+        <div class="tool-card">
+          <div class="card-header">
+            <h3>📑 Autonomous ITR Optimizer (FY 2024-25)</h3>
+            <span class="badge-accent">Sec 115BAC Verified</span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Annual Gross Salary (₹)</label>
+              <input type="number" id="itr-salary" value="1250000" step="50000">
+            </div>
+            <div class="form-group">
+              <label>TDS Deducted so far (₹)</label>
+              <input type="number" id="itr-tds" value="75000" step="10000">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Section 80C Deductions (₹)</label>
+              <input type="number" id="itr-80c" value="150000" max="150000">
+            </div>
+            <div class="form-group">
+              <label>Section 80D Health Insurance (₹)</label>
+              <input type="number" id="itr-80d" value="25000" max="50000">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>HRA Rent Exemption (₹)</label>
+              <input type="number" id="itr-hra" value="120000">
+            </div>
+            <div class="form-group">
+              <label>PAN Card Number</label>
+              <input type="text" id="itr-pan" value="ABCDE1234F">
+            </div>
+          </div>
+
+          <button id="btn-calc-itr" class="btn-primary" style="width:100%; margin-top:1rem;">Calculate & Generate ITR-1 Sahaj JSON</button>
+
+          <!-- Regime Showdown Results -->
+          <div id="itr-results" class="regime-showdown" style="display:none;">
+            <div class="showdown-winner" id="showdown-banner">
+              <!-- Rendered via JS -->
+            </div>
+
+            <div class="regime-columns">
+              <div class="regime-box" id="box-new-regime">
+                <h4>New Tax Regime</h4>
+                <div class="tax-stat" id="stat-new-tax">₹0</div>
+                <div class="tax-detail" id="stat-new-deductions">Standard Deduction: ₹75,000</div>
+              </div>
+              <div class="regime-box" id="box-old-regime">
+                <h4>Old Tax Regime</h4>
+                <div class="tax-stat" id="stat-old-tax">₹0</div>
+                <div class="tax-detail" id="stat-old-deductions">Total Deductions: ₹3,45,000</div>
+              </div>
+            </div>
+
+            <button id="btn-download-itr" class="btn-secondary" style="width:100%; margin-top:1rem;">📥 Download Ready-to-Upload ITR-1 JSON</button>
+          </div>
+        </div>
+
+        <!-- Card 2: EPF Explorer -->
+        <div class="tool-card">
+          <div class="card-header">
+            <h3>🏦 EPFO & Pension Corpus Explorer</h3>
+            <span class="badge-rate">8.25% Govt Interest</span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Monthly Basic + DA (₹)</label>
+              <input type="number" id="epf-basic" value="60000" step="5000">
+            </div>
+            <div class="form-group">
+              <label>Total Service Tenure (Years)</label>
+              <input type="number" id="epf-tenure" value="4.5" step="0.5">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Current EPF Balance (₹)</label>
+              <input type="number" id="epf-balance" value="380000" step="25000">
+            </div>
+            <div class="form-group">
+              <label>UAN Number</label>
+              <input type="text" id="epf-uan" value="101234567890">
+            </div>
+          </div>
+
+          <button id="btn-explore-epf" class="btn-primary" style="width:100%; margin-top:1rem;">Analyze Passbook & Withdrawal Rules</button>
+
+          <!-- EPF Breakdown -->
+          <div id="epf-results" style="display:none; margin-top:1.5rem;">
+            <div class="balance-cards-grid">
+              <div class="balance-card">
+                <span class="lbl">Employee Share (12%)</span>
+                <span class="val" id="val-emp-share">₹0</span>
+              </div>
+              <div class="balance-card">
+                <span class="lbl">Employer Share (3.67%)</span>
+                <span class="val" id="val-empr-share">₹0</span>
+              </div>
+              <div class="balance-card">
+                <span class="lbl">Pension Fund (EPS)</span>
+                <span class="val" id="val-eps-share">₹0</span>
+              </div>
+              <div class="balance-card highlight">
+                <span class="lbl">Total EPF Balance</span>
+                <span class="val" id="val-total-epf">₹0</span>
+              </div>
+            </div>
+
+            <div class="eligibility-box">
+              <h4>Withdrawal Eligibility Checker</h4>
+              <ul class="rules-list" id="epf-rules-list">
+                <!-- Rendered via JS -->
+              </ul>
+            </div>
+
+            <div class="corpus-projection">
+              <h4>Wealth Compounder (At Age 58)</h4>
+              <div class="proj-highlight">
+                <span class="corpus-val" id="val-corpus">₹0</span>
+                <span class="corpus-sub">Projected Retirement Wealth at 8.25% p.a.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Booking Handoff Modal -->
+  <div id="booking-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Ready for Payment Handoff</h3>
+        <button class="modal-close" id="btn-close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-item-title" id="modal-item-title"></p>
+        
+        <div class="passenger-summary">
+          <h4>Passenger Details (Auto-Filled)</h4>
+          <div class="pax-grid">
+            <div><strong>Name:</strong> <span id="m-pax-name"></span></div>
+            <div><strong>Age:</strong> <span id="m-pax-age"></span></div>
+            <div><strong>Gender:</strong> <span id="m-pax-gender"></span></div>
+            <div><strong>Email:</strong> <span id="m-pax-email"></span></div>
+            <div><strong>Phone:</strong> <span id="m-pax-phone"></span></div>
+            <div><strong>Session:</strong> <span id="m-sess-id"></span></div>
+          </div>
+        </div>
+
+        <div class="price-breakdown">
+          <div class="p-row"><span>Base Fare</span><span id="m-base-fare"></span></div>
+          <div class="p-row"><span>Taxes & GST</span><span id="m-taxes"></span></div>
+          <div class="p-row"><span>Convenience Fee</span><span id="m-conv-fee"></span></div>
+          <div class="p-row total"><span>Total Payable</span><span id="m-total-amt"></span></div>
+        </div>
+
+        <a id="btn-goto-payment" href="#" target="_blank" class="btn-primary" style="display:block; text-align:center; margin-top:1.5rem; text-decoration:none;">
+          Proceed Securely to Payment Gateway &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

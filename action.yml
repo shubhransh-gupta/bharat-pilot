@@ -1,0 +1,63 @@
+name: 'BharatPilot Travel & Citizen FinTech Agent'
+description: 'Autonomous flight & hotel fare radar, IRCTC availability, and automated ITR & EPF optimizer.'
+author: 'Shubhransh Gupta'
+branding:
+  icon: 'navigation'
+  color: 'orange'
+
+inputs:
+  mode:
+    description: 'Operation mode: travel-flights, travel-hotels, travel-trains, itr, or epf'
+    required: false
+    default: 'travel-flights'
+  origin:
+    description: 'Origin airport or station code (e.g. DEL, BOM, NDLS)'
+    required: false
+    default: 'DEL'
+  destination:
+    description: 'Destination airport or station code (e.g. BLR, GOA, MMCT)'
+    required: false
+    default: 'BLR'
+  max-price:
+    description: 'Maximum fare ceiling in INR'
+    required: false
+    default: ''
+  api-key:
+    description: 'AI provider API key for cognitive reasoning (Gemini/Claude/GPT)'
+    required: false
+    default: ''
+  provider:
+    description: 'AI provider: gemini, anthropic, openai, or deepseek'
+    required: false
+    default: 'gemini'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install BharatPilot
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        pip install git+https://github.com/shubhransh-gupta/bharat-pilot.git
+
+    - name: Run BharatPilot Task
+      shell: bash
+      env:
+        GEMINI_API_KEY: ${{ inputs.api-key }}
+      run: |
+        if [ "${{ inputs.mode }}" = "travel-flights" ]; then
+          ARGS="travel flights ${{ inputs.origin }} ${{ inputs.destination }}"
+          if [ -n "${{ inputs.max-price }}" ]; then
+            ARGS="$ARGS --max-price ${{ inputs.max-price }}"
+          fi
+          eval bharat-pilot $ARGS
+        elif [ "${{ inputs.mode }}" = "itr" ]; then
+          eval bharat-pilot itr 1200000
+        else
+          eval bharat-pilot travel flights DEL BLR
+        fi
