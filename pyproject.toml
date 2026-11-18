@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "bharat-pilot"
-version = "0.1.0"
-description = "Autonomous Travel Concierge & Citizen FinTech Super-Agent (Flights, Hotels, IRCTC, ITR & EPF)"
+name = "niffler-agent"
+version = "0.2.0"
+description = "Niffler: Autonomous Travel Concierge & Citizen FinTech Super-Agent (Flights, Hotels, IRCTC Tatkal, ITR & EPF)"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
@@ -29,4 +29,6 @@ dev = [
 ]
 
 [project.scripts]
-bharat-pilot = "bharat_pilot.cli:main"
+niffler = "niffler.cli:main"
+niffler-agent = "niffler.cli:main"
+bharat-pilot = "niffler.cli:main"

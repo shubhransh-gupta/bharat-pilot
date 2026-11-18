@@ -1,16 +1,16 @@
 """
-Unit tests for BharatPilot autonomous travel and citizen FinTech engine.
+Unit tests for Niffler autonomous travel and citizen FinTech engine.
 """
 
 import pytest
-from bharat_pilot.travel.flights import FlightRadar
-from bharat_pilot.travel.hotels import HotelRadar
-from bharat_pilot.travel.trains import IRCTCRadar
-from bharat_pilot.travel.buses import BusRadar
-from bharat_pilot.travel.booking_handoff import BookingHandoffEngine
-from bharat_pilot.citizen.itr_optimizer import ITROptimizer
-from bharat_pilot.citizen.epf_explorer import EPFExplorer
-from bharat_pilot.config import UserProfile, BharatConfig
+from niffler.travel.flights import FlightRadar
+from niffler.travel.hotels import HotelRadar
+from niffler.travel.trains import IRCTCRadar
+from niffler.travel.buses import BusRadar
+from niffler.travel.booking_handoff import BookingHandoffEngine
+from niffler.citizen.itr_optimizer import ITROptimizer
+from niffler.citizen.epf_explorer import EPFExplorer
+from niffler.config import UserProfile, NifflerConfig, BharatConfig
 
 
 def test_flight_radar_cheapest_tag():

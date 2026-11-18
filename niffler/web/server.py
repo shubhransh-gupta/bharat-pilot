@@ -1,5 +1,5 @@
 """
-Lightweight embedded HTTP server & API backend for BharatPilot Web Portal.
+Lightweight embedded HTTP server & API backend for Niffler Web Portal.
 """
 
 import http.server
@@ -16,10 +16,10 @@ from ..travel.buses import BusRadar
 from ..travel.booking_handoff import BookingHandoffEngine
 from ..citizen.itr_optimizer import ITROptimizer
 from ..citizen.epf_explorer import EPFExplorer
-from ..config import BharatConfig, UserProfile
+from ..config import NifflerConfig, BharatConfig, UserProfile
 
 
-class BharatAPIHandler(http.server.SimpleHTTPRequestHandler):
+class NifflerAPIHandler(http.server.SimpleHTTPRequestHandler):
     """Handles both static dashboard files and dynamic JSON REST endpoints."""
 
     flight_radar = FlightRadar()
@@ -165,8 +165,11 @@ class BharatAPIHandler(http.server.SimpleHTTPRequestHandler):
         self.wfile.write(payload)
 
 
+BharatAPIHandler = NifflerAPIHandler
+
+
 def start_server(host: str = "127.0.0.1", port: int = 8501):
-    """Run local BharatPilot web server."""
-    with socketserver.TCPServer((host, port), BharatAPIHandler) as httpd:
-        print(f"[*] BharatPilot Web Portal running at http://{host}:{port}")
+    """Run local Niffler web server."""
+    with socketserver.TCPServer((host, port), NifflerAPIHandler) as httpd:
+        print(f"[*] Niffler Web Portal running at http://{host}:{port}")
         httpd.serve_forever()

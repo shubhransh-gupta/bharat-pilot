@@ -1,5 +1,5 @@
 """
-Rich interactive CLI for BharatPilot — Autonomous Travel & Citizen FinTech Super-Agent.
+Rich interactive CLI for Niffler — Autonomous Travel & Citizen FinTech Super-Agent.
 """
 
 import sys
@@ -17,19 +17,20 @@ from .travel.booking_handoff import BookingHandoffEngine
 from .citizen.itr_optimizer import ITROptimizer
 from .citizen.epf_explorer import EPFExplorer
 from .web.server import start_server
-from .config import BharatConfig
+from .config import NifflerConfig, BharatConfig
 
 console = Console()
 
 
 def print_banner():
     banner = """
-[bold cyan]   ___  __                  __  ____  _ __     __ [/bold cyan]
-[bold cyan]  / _ )/ /  ___ _____ ___ _/ /_/ / / (_) /__  / /_[/bold cyan]
-[bold cyan] / _  / _ \\/ _ `/ __/ _ `/ __/ /_/ / / / _ \\/ __/[/bold cyan]
-[bold cyan]/____/_//_/\\_,_/_/  \\_,_/\\__/_/ .___/_/_/\\___/\\__/ [/bold cyan]
-[bold cyan]                             /_/                   [/bold cyan]
-[bold yellow]🇮🇳 Autonomous Travel & Citizen FinTech Super-Agent • Open Source[/bold yellow]
+[bold gold1]   _   _ ___ _____ _____ _     _____ ____  [/bold gold1]
+[bold gold1]  | \\ | |_ _|  ___|  ___| |   | ____|  _ \\ [/bold gold1]
+[bold gold1]  |  \\| || || |_  | |_  | |   |  _| | |_) |[/bold gold1]
+[bold gold1]  | |\\  || ||  _| |  _| | |___| |___|  _ < [/bold gold1]
+[bold gold1]  |_| \\_|___|_|   |_|   |_____|_____|_| \\_\\ [/bold gold1]
+[bold yellow]✨ Autonomous Travel Concierge & Citizen FinTech Agent ✨[/bold yellow]
+[dim italic]  "Sniffing out the cheapest flights, IRCTC seats, tax refunds & EPF gold"[/dim italic]
 """
     console.print(banner)
 
@@ -204,7 +205,7 @@ def handle_epf(args):
 
 def main():
     print_banner()
-    parser = argparse.ArgumentParser(description="BharatPilot: Autonomous Travel & Citizen FinTech Super-Agent")
+    parser = argparse.ArgumentParser(description="Niffler: Autonomous Travel & Citizen FinTech Super-Agent")
     subparsers = parser.add_subparsers(dest="command")
 
     # travel

@@ -1,5 +1,5 @@
 """
-Configuration and Profile Management for BharatPilot.
+Configuration and Profile Management for Niffler.
 """
 
 import os
@@ -12,6 +12,7 @@ def load_env_file():
     """Load environment variables from standard paths."""
     paths = [
         Path.cwd() / ".env",
+        Path.home() / ".config" / "niffler" / ".env",
         Path.home() / ".config" / "bharat-pilot" / ".env",
         Path.home() / ".hermes" / ".env",
     ]
@@ -50,16 +51,20 @@ class UserProfile:
 
 
 @dataclass
-class BharatConfig:
-    """Global configuration for BharatPilot."""
+class NifflerConfig:
+    """Global configuration for Niffler."""
     provider: Optional[str] = None
     model: Optional[str] = None
     api_key: Optional[str] = None
     base_url: Optional[str] = None
     profile: UserProfile = field(default_factory=UserProfile)
-    output_dir: Path = field(default_factory=lambda: Path.cwd() / "bharat_outputs")
+    output_dir: Path = field(default_factory=lambda: Path.cwd() / "niffler_outputs")
     web_host: str = "127.0.0.1"
     web_port: int = 8501
 
     def __post_init__(self):
         self.output_dir.mkdir(parents=True, exist_ok=True)
+
+
+# Backwards compatibility alias
+BharatConfig = NifflerConfig
